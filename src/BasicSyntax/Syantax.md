@@ -324,3 +324,48 @@ export default App;
 | `transparent`       | Makes the modal background transparent                |
 | `onRequestClose`    | Required on Android — handles hardware back button    |
 | `presentationStyle` | iOS only — can be `'fullScreen'`, `'pageSheet'`, etc. |
+
+## refreshControl
+
+it used inside a ScrollView or ListView to add pull to refresh functionality. When the ScrollView is at scrollY: 0, swiping down triggers an onRefresh event.
+
+```js
+import React from 'react';
+import {RefreshControl, ScrollView, StyleSheet, Text,SafeAreaView} from 'react-native';
+
+const App = () => {
+  const [refreshing, setRefreshing] = React.useState(false);
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
+
+  return (
+      <SafeAreaView style={styles.container}>
+        <ScrollView
+          contentContainerStyle={styles.scrollView}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }>
+          <Text>Pull down to see RefreshControl indicator</Text>
+        </ScrollView>
+      </SafeAreaView>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  scrollView: {
+    flex: 1,
+    backgroundColor: 'pink',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
+
+export default App;
+```
